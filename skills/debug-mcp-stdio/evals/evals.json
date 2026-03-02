@@ -1,0 +1,39 @@
+{
+  "skill_name": "debug-mcp-stdio",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我在一个 Node.js 的 MCP stdio server 项目里想断点调试。入口构建产物是 build/internal/index.js。我希望用 VS Code attach + npx @modelcontextprotocol/inspector 的方式跑起来。请直接给我 launch.json 里要新增的 attach 配置片段，以及一条可运行的 inspector 命令。顺便提醒我 sourcemap 要怎么确认。",
+      "expected_output": "输出包含：1) 一个可复制的 launch.json configuration 对象（request=attach、protocol=inspector、port 与 outFiles 正确）；2) 一条 npx @modelcontextprotocol/inspector node --inspect 或 --inspect-brk 的命令；3) 至少一个 sourcemap 自检方式（例如查找 *.map）。",
+      "files": [],
+      "expectations": [
+        "输出含有一个可直接粘贴到 .vscode/launch.json 的 attach 配置片段，并明确说明要追加到 configurations 数组里",
+        "命令中包含 npx -y @modelcontextprotocol/inspector node --inspect 或 --inspect-brk，并且端口与 attach 配置一致",
+        "给出 sourcemap 相关的自检方法（例如 find *.map 或 sourceMappingURL 检查点）"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我运行 `npx @modelcontextprotocol/inspector node --inspect=9229 build/internel/index.js` 一闪就退出，而且 VS Code 断点都是灰的。请告诉我最可能的原因，并给出按优先级的排查步骤（包括端口占用、更换端口、sourcemap、路径拼写）。",
+      "expected_output": "输出包含一个按优先级排序的排障清单，覆盖：入口路径拼写错误（internel vs internal）、inspect-brk、端口检查/更换、outFiles 与 sourcemap 检查，并给出对应命令示例。",
+      "files": [],
+      "expectations": [
+        "明确指出 build/internel 很可能是拼写错误，并给出 internal 的正确写法或检查方式",
+        "排障清单包含端口占用检查（例如 lsof）与换端口时需要同时改 launch.json 和命令",
+        "建议使用 --inspect-brk 来确保 attach 后再继续执行",
+        "包含 sourcemap/ outFiles 导致断点灰色的排查要点"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我不想调 build/dist 产物（sourcemap 太麻烦），有没有一个兜底方式直接调源码？我的入口是 src/index.ts，我只要能断点停住验证逻辑即可。",
+      "expected_output": "输出给出一个可运行的源码调试兜底方案（例如 npx tsx --inspect-brk=PORT src/index.ts），并说明这条方案与 inspector/构建产物调试的区别与适用范围。",
+      "files": [],
+      "expectations": [
+        "提供一个直接跑 TS 源码并开启 inspector 的命令示例（例如 npx -y tsx --inspect-brk=9229 src/index.ts）",
+        "解释为什么它是兜底（绕过 sourcemap/构建产物）以及什么时候应该回到构建产物链路"
+      ]
+    }
+  ]
+}
+
