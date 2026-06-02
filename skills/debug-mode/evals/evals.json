@@ -1,0 +1,17 @@
+{
+  "skill_name": "debug-mode",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/debug-mode 我的 React 页面点击提交后列表不刷新，Network 里接口 200 但 UI 没变。项目在 /Users/me/app，请按 debug 流程来。",
+      "expected_output": "启动 debug-server、列出假设、在相关组件/请求处添加 #region DEBUG 插桩（fetch 到 3847），清空日志后请用户复现并停止等待。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我已经按你说的复现了，debug.log 在 /Users/me/app/.claude/debug.log，请分析。",
+      "expected_output": "读取/过滤 debug.log，映射 H1/H2 假设，给出带证据的诊断；若不足则提出新假设而非直接猜修复。",
+      "files": []
+    }
+  ]
+}
